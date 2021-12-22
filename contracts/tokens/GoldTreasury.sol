@@ -31,7 +31,6 @@ contract GoldTreasury is OperatorsUpgradeable, ReentrancyGuardUpgradeable {
         uint amount;
         bool unlocked;
     }
-    mapping(address=>LockItem[]) public unlock;
     uint immutable public exchangeRate = 10;
 
     uint256[50] private __gap;
@@ -88,7 +87,7 @@ contract GoldTreasury is OperatorsUpgradeable, ReentrancyGuardUpgradeable {
         uint cashAmount = _value.div(exchangeRate);
         
         if(tokenCash.balanceOf(address(this)) < cashAmount && invest != address(0)) {
-            uint code = ICompCToken(invest).redeemUnderlying(cashAmount);
+            uint code = ICompCToken(invest).redeemUnderlying(cashAmount.sub(tokenCash.balanceOf(address(this))));
             require(code == 0, 'redeem error');
         }
 
@@ -103,13 +102,9 @@ contract GoldTreasury is OperatorsUpgradeable, ReentrancyGuardUpgradeable {
         uint total = tokenGold.totalSupply().div(exchangeRate);
         value = ICompCToken(invest).balanceOfUnderlying(address(this)).add(amount).sub(total);
         if(value > 0) {
-            IGoldToken(address(tokenGold)).mint(value);
-            tokenGold.safeTransfer(_user, value);
+            uint goldAmount = value.mul(exchangeRate);
+            IGoldToken(address(tokenGold)).mint(goldAmount);
+            tokenGold.safeTransfer(_user, goldAmount);
         }
-    }
-
-    function claim(address _user) external onlyOper nonReentrant returns (uint value) {
-        _user;
-        return 0;
     }
 }
