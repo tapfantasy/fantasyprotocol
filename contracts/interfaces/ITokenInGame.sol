@@ -9,6 +9,7 @@ interface ITokenInGame {
 
     event PushToGame(address _user, address _token, uint _value, uint _total);
     event PullFromGame(uint __serialid, address _user, address _token, uint _value, uint _total);
+    event SetToken(address _token, bool _enable);
 
     function isEnabledToken(address _token) external view returns (bool);
     function setToken(address _token, bool _enable) external;

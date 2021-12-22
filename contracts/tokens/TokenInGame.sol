@@ -29,6 +29,7 @@ contract TokenInGame is OperatorsUpgradeable, ReentrancyGuardUpgradeable, IToken
 
     function setToken(address _token, bool _enable) public override onlyOper {
         enabled[_token] = _enable;
+        emit SetToken(_token, _enable);
     }
 
     function isEnabledToken(address _token) external view override returns (bool) {
@@ -52,6 +53,7 @@ contract TokenInGame is OperatorsUpgradeable, ReentrancyGuardUpgradeable, IToken
     function gameOutBatch(uint[] memory _serialid, address[] memory _token, address[] memory _user, uint[] memory _value) external override onlyOper {
         require(_serialid.length == _token.length, 'length1!');
         require(_user.length == _value.length, 'length2!');
+        require(_user.length == _token.length, 'length3!');
         for(uint i = 0; i < _serialid.length; i ++) {
             gameOut(_serialid[i], _token[i], _user[i], _value[i]);
         }

@@ -19,6 +19,11 @@ contract GoldTreasury is OperatorsUpgradeable, ReentrancyGuardUpgradeable {
     using SafeERC20Upgradeable for IERC20Upgradeable;
     using EnumerableSetUpgradeable for EnumerableSetUpgradeable.AddressSet;
 
+    event SetFeeGather(address _feegather);
+    event SetFeeRate(uint _feerate);
+    event SetInvest(address _invest);
+    event SetTokens(address _tokenCash, address _tokenGold);
+
     IERC20Upgradeable public tokenCash;
     IERC20Upgradeable public tokenGold;
     address public invest;
@@ -26,11 +31,6 @@ contract GoldTreasury is OperatorsUpgradeable, ReentrancyGuardUpgradeable {
     uint public feerate;
     address public feegather;
 
-    struct LockItem {
-        uint unlocktime;
-        uint amount;
-        bool unlocked;
-    }
     uint immutable public exchangeRate = 10;
 
     uint256[50] private __gap;
@@ -48,19 +48,24 @@ contract GoldTreasury is OperatorsUpgradeable, ReentrancyGuardUpgradeable {
 
     function setFeeGather(address _feegather) external onlyOwner {
         feegather = _feegather;
+        emit SetFeeGather(feegather);
     }
 
     function setFeeRate(uint _feerate) external onlyOwner {
+        require(_feerate <= 1e9, 'rate!');
         feerate = _feerate;
+        emit SetFeeRate(feerate);
     }
 
     function setInvest(address _invest) external onlyOwner {
         invest = _invest;
+        emit SetInvest(invest);
     }
 
     function setTokens(address _tokenCash, address _tokenGold) public onlyOwner {
         tokenCash = IERC20Upgradeable(_tokenCash);
         tokenGold = IERC20Upgradeable(_tokenGold);
+        emit SetTokens(address(tokenCash), address(tokenGold));
     }
 
     function getTokens() public view returns (address _tokenCash, address _tokenGold) {

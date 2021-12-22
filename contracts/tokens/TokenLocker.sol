@@ -82,6 +82,7 @@ contract TokenLocker is OperatorsUpgradeable, ReentrancyGuardUpgradeable, IToken
     function gameOutBatch(uint[] memory _serialid, address[] memory _user, uint[] memory _timestamp, uint[] memory _value) external override onlyOper {
         require(_serialid.length == _user.length, 'length1!');
         require(_timestamp.length == _value.length, 'length2!');
+        require(_user.length == _timestamp.length, 'length3!');
         for(uint i = 0; i < _serialid.length; i ++) {
             gameOut(_serialid[i], _user[i], _timestamp[i], _value[i]);
         }

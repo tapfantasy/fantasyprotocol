@@ -65,11 +65,11 @@ contract TapDesktop is Ownable, ERC721Holder {
     }
 
     // for mystery box 
-    function mysteryBoxOpen(uint _boxid) public {
+    function mysteryBoxOpen(uint _boxid) external {
         nftBuy(box, _boxid, false);
     }
 
-    function mysteryBoxOpenETH(uint _boxid) public payable {
+    function mysteryBoxOpenETH(uint _boxid) external payable {
         nftBuy(box, _boxid, true);
     }
 

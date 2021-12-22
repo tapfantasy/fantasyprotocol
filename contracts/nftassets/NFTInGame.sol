@@ -38,16 +38,20 @@ contract NFTInGame is OperatorsUpgradeable, ERC721HolderUpgradeable, ReentrancyG
     function setBlacklist(uint[] memory _idlist, bool _enable) external override onlyOwner {
         for(uint i = 0; i < _idlist.length; i ++) {
             blacklist[_idlist[i]] = _enable;
+            emit SetBlacklist(_idlist[i], _enable);
         }
     }
 
     function setCoolTime(uint _cooltime) external override onlyOwner {
         cooltime = _cooltime;
+        emit SetCoolTime(_cooltime);
     }
 
     function setFeeGather(address payable _feeGather, uint _feeAmount) external override onlyOwner {
+        require(_feeGather != address(0), "_feeGather!");
         feeGather = _feeGather;
         feeAmount = _feeAmount;
+        emit SetFeeGather(feeGather, feeAmount);
     }
 
     function lockInGame(uint _tokenId, address _user) external override payable returns (bool) {

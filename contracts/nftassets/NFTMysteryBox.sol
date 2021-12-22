@@ -35,12 +35,17 @@ contract NFTMysteryBox is OperatorsUpgradeable, ReentrancyGuardUpgradeable, INFT
     }
 
     function setFeeGather(address _feegather) external override onlyOwner {
+        require(_feegather != address(0), "_feeGather!");
         feegather = _feegather;
+        emit SetFeeGather(feegather);
     }
 
     function setTokens(address _payToken, address _obtainToken) public override onlyOwner {
+        require(_payToken != address(0), "_payToken!");
+        require(_obtainToken != address(0), "_obtainToken!");
         payToken = _payToken;
         obtainToken = _obtainToken;
+        emit SetTokens(payToken, obtainToken);
     }
 
     function addItem(uint typeid, uint price, uint stock) external override onlyOper {
@@ -50,6 +55,7 @@ contract NFTMysteryBox is OperatorsUpgradeable, ReentrancyGuardUpgradeable, INFT
 
     function enableItem(uint itemId, bool open) external override onlyOper {
         items[itemId].open = open;
+        emit EnableItem(itemId, open);
     }
 
     function getItem(uint _itemId) external view override returns (ShopItem memory) {

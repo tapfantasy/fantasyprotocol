@@ -34,7 +34,9 @@ contract NFTMarket is OperatorsUpgradeable, ERC721HolderUpgradeable, ReentrancyG
     }
 
     function setFeeGather(address _feegather) external override onlyOwner {
+        require(_feegather != address(0), "_feeGather!");
         feegather = _feegather;
+        emit SetFeeGather(feegather);
     }
 
     function getFeeGather() external view override returns (address) {
@@ -67,7 +69,7 @@ contract NFTMarket is OperatorsUpgradeable, ERC721HolderUpgradeable, ReentrancyG
             tokenDecimals = IERC20MetadataUpgradeable(_itemToken).decimals();
         }else if(_itemToken == address(0)) {
             require(_itemNFT != address(0), 'NFT!');
-            tokenDecimals = 18;
+            tokenDecimals = 0;
         }else {
             require(_itemToken != address(0) || _itemNFT != address(0), 'single!');
         }
@@ -86,8 +88,8 @@ contract NFTMarket is OperatorsUpgradeable, ERC721HolderUpgradeable, ReentrancyG
     }
 
     function setGoods(uint _goodsid, uint _feeRate) external override onlyOwner {
+        require(_feeRate <= 1e9, 'rate!');
         MarketGoods storage goodsItem = goods[_goodsid];
-        require(goodsItem.feeRate <= 1e9, 'rate!');
         goodsItem.feeRate = _feeRate;
         emit GoodsChanged(_goodsid, _feeRate, goodsItem.available);
     }

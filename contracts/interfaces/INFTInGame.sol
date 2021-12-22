@@ -6,7 +6,10 @@ import "./IOperators.sol";
 interface INFTInGame {
     event TokenInGame(address indexed _user, uint _tokenId, bool _b);
     event TokenOutGame(address indexed _user, uint _tokenId, bool _b);
-
+    event SetBlacklist(uint _id, bool _enable);
+    event SetCoolTime(uint _cooltime);
+    event SetFeeGather(address _feeGather, uint _feeAmount);
+    
     function cooltime() external view returns(uint);
     function nftAssets() external view returns(address);
     function feeGather() external view returns(address payable);

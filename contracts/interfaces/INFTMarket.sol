@@ -5,7 +5,8 @@ interface INFTMarket {
 
     event GoodsCreated(uint _goodsid, address _payToken, address _itemNFT, address _itemToken, uint _feeRate, bool _available);
     event GoodsChanged(uint _goodsid, uint _feeRate, bool _available);
-
+    event SetFeeGather(address _feegather);
+    
     event ItemOnSell(uint _orderid, address indexed _user, uint _goodsid, uint _tokenId, uint _amount, uint _price, uint _timestamp);
     event ItemOnBuy(uint _orderid, address indexed _user, uint _goodsid, uint _tokenId, uint _amount, uint _pay, uint _fee, uint _timestamp);
     event ItemOnCancel(uint _orderid, address indexed _user, uint _goodsid, uint _tokenId, uint _amount, uint _timestamp);

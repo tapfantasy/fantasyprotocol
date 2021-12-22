@@ -8,6 +8,9 @@ interface INFTShop {
     event ItemOnEdit(uint _itemId, bool _open, uint _itemid, uint _price, uint _stock, uint _timestamp);
     event ItemOnBuy(address indexed _user, uint _itemId, uint _typeid, uint _price, uint _stock, uint _timestamp);
     event ItemOnObtain(address indexed _user, uint flowid, uint _tokenId, uint _timestamp);
+    event SetFeeGather(address _feegather);
+    event SetTokens(address _payToken, address _obtainToken);
+    event EnableItem(uint itemId, bool open);
 
     struct ShopItem {
         bool open;
