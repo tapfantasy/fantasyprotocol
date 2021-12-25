@@ -12,8 +12,7 @@ interface ITokenMinter is IERC20 {
 
 interface ITokenLocker {
 
-    event PushToGame(address _user, address _token, uint _value, uint _total);
-    event PullFromGame(uint __serialid, address _user, address _token, uint _value, uint _total);
+    event PullFromGame(uint __serialid, uint _id, address _user, uint _value);
     event ClaimToken(uint __serialid, address _user, uint _value);
 
     struct LockedItem {

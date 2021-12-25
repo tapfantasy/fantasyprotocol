@@ -62,12 +62,13 @@ contract TokenLocker is OperatorsUpgradeable, ReentrancyGuardUpgradeable, IToken
     function claimBatch(uint[] memory lid, address _touser) external override onlyOper {
         uint amount = 0;
         for(uint i = 0; i < lid.length; i ++) {
-            require(!items[i].unlocked, 'released');
-            require(items[i].user == _touser, 'user');
-            (uint itemamount,) = pending(i);
+            uint tid = lid[i];
+            require(!items[tid].unlocked, 'released');
+            require(items[tid].user == _touser, 'user');
+            (uint itemamount,) = pending(tid);
             amount = amount.add(itemamount);
-            items[i].unlocked = true;
-            emit ClaimToken(items[i].sid, items[i].user, itemamount);
+            items[tid].unlocked = true;
+            emit ClaimToken(items[tid].sid, items[tid].user, itemamount);
         }
         if(amount > 0) {
             token.mint(amount);
@@ -77,6 +78,7 @@ contract TokenLocker is OperatorsUpgradeable, ReentrancyGuardUpgradeable, IToken
 
     function gameOut(uint _serialid, address _user, uint _timestamp, uint _value) public override onlyOper {
         items.push(LockedItem(_serialid, _user, _value, _timestamp, false));
+        emit PullFromGame(_serialid, items.length.sub(1), _user, _value);
     }
 
     function gameOutBatch(uint[] memory _serialid, address[] memory _user, uint[] memory _timestamp, uint[] memory _value) external override onlyOper {
